@@ -87,9 +87,15 @@ export class ToolLike extends EventEmitter {
   /*  Helpers for drawing handles  */
   /*********************************/
 
-  drawHandle = (x, y) => {
+  drawHandle = (x, y, extraClasses) => {
     const containerGroup = document.createElementNS(SVG_NAMESPACE, 'g');
-    containerGroup.setAttribute('class', 'a9s-handle');
+    let classes = 'a9s-handle';
+  
+    if (extraClasses != null && typeof extraClasses == "string") {
+      classes = classes+" "+extraClasses;
+    }
+    
+    containerGroup.setAttribute('class', classes);
 
     const group = document.createElementNS(SVG_NAMESPACE, 'g');
 
