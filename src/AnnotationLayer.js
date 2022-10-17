@@ -20,6 +20,10 @@ export default class AnnotationLayer extends EventEmitter {
 
     this.readOnly = config.readOnly;
 
+    config.readOnlyShape = config.readOnlyShape || false;
+
+    this.config = config;
+
     // Deprecate the old 'formatter' option 
     if (config.formatter)
       this.formatters = [ config.formatter ];
@@ -196,6 +200,9 @@ export default class AnnotationLayer extends EventEmitter {
   }
 
   addAnnotation = annotation => {
+    // We cannot add annotations if we are in read only shape mode
+    // if (this.config.readOnlyShape) return;
+
     const g = drawShape(annotation, this.imageEl);
 
     addClass(g, 'a9s-annotation');
@@ -216,6 +223,9 @@ export default class AnnotationLayer extends EventEmitter {
     this.tools?.registerTool(plugin);
 
   addOrUpdateAnnotation = (annotation, previous) => {
+    // We cannot add or update annotations if we are in read only shape mode
+    if (this.config.readOnlyShape) return;
+
     if (this.selectedShape && (this.selectedShape.annotation.isEqual(annotation) || this.selectedShape.annotation.isEqual(previous))) {
       this.deselect();
       this.emit('select', {});

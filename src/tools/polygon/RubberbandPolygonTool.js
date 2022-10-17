@@ -15,14 +15,23 @@ export default class RubberbandPolygonTool extends Tool {
   }
 
   startDrawing = (x, y, startOnSingleClick) => {
-    this._isDrawing = true;
-    this._startOnSingleClick = startOnSingleClick;
 
-    this.attachListeners({
-      mouseMove: this.onMouseMove,
-      mouseUp: this.onMouseUp,
-      dblClick: this.onDblClick
-    });
+    if (!this.config.readOnlyShape) {
+      this._isDrawing = true;
+      this._startOnSingleClick = startOnSingleClick;
+  
+      this.attachListeners({
+        mouseMove: this.onMouseMove,
+        mouseUp: this.onMouseUp,
+        dblClick: this.onDblClick
+      });
+    }
+    else {
+      // Only attach "onMouseUp" to allow selection
+      this.attachListeners({
+        mouseUp: this.onMouseUp,
+      });
+    }
     
     this.rubberband = new RubberbandPolygon([ x, y ], this.g, this.env);
   }
