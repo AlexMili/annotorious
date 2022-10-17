@@ -42,6 +42,15 @@ export class ToolLike extends EventEmitter {
     this.resizeObserver = null;
   }
 
+  getRadius = () => {
+    if (typeof this.config.handleRadius === 'function') {
+      return this.config.handleRadius()
+    }
+    else {
+      return this.config.handleRadius || 6
+    }
+  }
+
   enableResponsive = () => {
     if (window.ResizeObserver) {
       this.resizeObserver = new ResizeObserver(() => {
@@ -107,9 +116,10 @@ export class ToolLike extends EventEmitter {
       c.setAttribute('transform-origin', `${x} ${y}`);
       return c;
     }
+  
+    const radius = this.scale * this.getRadius()
 
-    const radius = this.config.handleRadius || 6;
-
+    // console.log("[drawCircle] radius="+radius);
     const inner = drawCircle(radius);
     inner.setAttribute('class', 'a9s-handle-inner')
 
@@ -147,8 +157,9 @@ export class ToolLike extends EventEmitter {
     const inner = handle.querySelector('.a9s-handle-inner');
     const outer = handle.querySelector('.a9s-handle-outer');
 
-    const radius = this.scale * (this.config.handleRadius || 6);
+    const radius = this.scale * this.getRadius();
 
+    // console.log("[scaleHandle] radius="+radius);
     inner.setAttribute('r', radius);
     outer.setAttribute('r', radius);
   }
