@@ -112,7 +112,8 @@ export default class EditablePolygon extends EditableShape {
   }
 
   onMouseMove = evt => {
-    if (this.config.readOnlyShape) return;
+    if (evt.button !== 0) return;  // left click
+    else if (this.config.readOnlyShape) return;
 
     const constrain = (coord, delta, max) =>
       coord + delta < 0 ? -coord : (coord + delta > max ? max - coord : delta);

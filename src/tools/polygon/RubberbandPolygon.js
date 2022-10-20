@@ -49,7 +49,6 @@ export default class RubberbandPolygon {
     this.outer.getBoundingClientRect();
 
   dragTo = xy => {
-    if (this.config.readOnlyShape) return;
     // Make visible
     this.group.style.display = null;
 

@@ -182,7 +182,7 @@ export default class Tool extends ToolLike {
 
   attachListeners = ({ mouseMove, mouseUp, dblClick }) => {
     // Handle SVG conversion on behalf of tool implementations
-    if (mouseMove) {
+    if (mouseMove && !this.config.readOnlyShape) {
       this.mouseMove = evt => {
         const { x , y } = this.getSVGPoint(evt);
 
@@ -198,6 +198,7 @@ export default class Tool extends ToolLike {
       this.svg.addEventListener('mousemove', this.mouseMove);
     }
 
+    // Does not block mouseUp since the event is used for selection
     if (mouseUp) {
       this.mouseUp = evt => {
         if (evt.button !== 0) return;  // left click
@@ -209,7 +210,7 @@ export default class Tool extends ToolLike {
       document.addEventListener('mouseup', this.mouseUp);
     }
 
-    if (dblClick) {
+    if (dblClick && !this.config.readOnlyShape) {
       this.dblClick = evt => {
         const { x , y } = this.getSVGPoint(evt);
         dblClick(x, y, evt);

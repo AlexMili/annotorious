@@ -129,6 +129,8 @@ export default class EditableRect extends EditableShape {
 
   onGrab = grabbedElem => evt => {
     if (evt.button !== 0) return;  // left click
+    else if (this.config.readOnlyShape) return;
+
     this.grabbedElem = grabbedElem;
     const pos = this.getSVGPoint(evt);
     const { x, y } = getRectSize(this.rectangle);
@@ -137,6 +139,8 @@ export default class EditableRect extends EditableShape {
 
   onMouseMove = evt => {
     if (evt.button !== 0) return;  // left click
+    else if (this.config.readOnlyShape) return;
+
     const constrain = (coord, max) =>
       coord < 0 ? 0 : (coord > max ? max : coord);
 
